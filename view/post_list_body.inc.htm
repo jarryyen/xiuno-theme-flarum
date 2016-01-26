@@ -1,0 +1,26 @@
+<?php foreach($postlist as $_post) { ?>
+<div class="PostStream-item" pid="<?php echo $_post['pid']; ?>">
+	<article class="Post CommentPost">
+		<div class="Post-controls pull-right">
+			<?php if($allowupdate || $_post['allowupdate']) { ?>
+			<span class="TagLabel"><a class="edit" href="post-update-<?php echo $_post['pid']; ?>.htm" title="编辑">编辑</a></span>
+			<?php } ?>
+			<?php if($allowdelete || $_post['allowdelete']) { ?>
+			<span class="TagLabel"><a href="post-delete-<?php echo $_post['pid']; ?>.htm" class="delete" title="删除">删除</a></span>
+		　<?php } ?>
+		<span class="TagLabel"><?php echo $_post['floor']; ?></span>
+		</div>
+		<header class="Post-header">
+			<ul>
+				<li class="item-user">
+					<div class="PostUser">
+						<h3><a href="<?=$_post['user_url']?>"><img class="Avatar PostUser-avatar" src="<?=$_post['user_avatar_url']?>"> <span class="username"><?=$_post['username']?></span></a></h3>
+					</div>
+				</li>
+				<li class="PostMeta"><time title="<?php echo $_post['create_date_fmt']; ?>"><?php echo $_post['create_date_fmt']; ?></time></li>
+			</ul>
+		</header>
+		<div class="Post-body" pid="<?=$_post['pid']?>"><?=$_post['message']?></div>
+	</article>
+</div>
+<? } ?>

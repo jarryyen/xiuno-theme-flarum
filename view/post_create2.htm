@@ -1,0 +1,155 @@
+<?php include "./pc/view/doctype.inc.htm"; ?>
+<body>
+  <div id="app" class="App">
+    <?php include "./pc/view/header_thread.inc.htm"; ?>
+    <div class="App-content">
+    	<div id="content">
+    		<div class="DiscussionPage">
+
+    		  <!-- 电脑模式 -->
+    		  <div class="DiscussionPage-discussion">
+    		  	<div class="container">
+
+              <nav class="DiscussionPage-nav">
+                <ul>
+                  <li class="item-controls">
+                    <div class="ButtonGroup Dropdown dropdown App-primaryControl Dropdown--split itemCount1">
+                      <button class=" SplitDropdown-button Button Button--primary hasIcon" type="button">
+                        <i class="icon fa fa-fw fa-reply Button-icon"></i>
+                        <span class="Button-label">登陆后回复</span>
+                      </button>
+                      <button class="Dropdown-toggle Button Button--icon Button--primary" data-toggle="dropdown">
+                        <i class="icon fa fa-fw fa-ellipsis-v Button-icon"></i>
+                        <i class="icon fa fa-fw fa-caret-down Button-caret"></i>
+                      </button>
+                      <ul class="Dropdown-menu dropdown-menu  Dropdown-menu--right">
+                        <li class="item-reply">
+                          <button class=" hasIcon" type="button">
+                            <i class="icon fa fa-fw fa-reply Button-icon"></i>
+                            <span class="Button-label">登陆后回复</span>
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="item-scrubber">
+                    <div class="PostStreamScrubber Dropdown App-titleControl">
+                      <button class="Button Dropdown-toggle" data-toggle="dropdown">回帖 <i class="icon fa fa-fw fa-sort "></i></button>
+                      <div class="Dropdown-menu dropdown-menu">
+                        <div class="Scrubber">
+                          <a class="Scrubber-first"><i class="icon fa fa-fw fa-angle-double-up"></i> 原帖</a>
+                          <div class="Scrubber-scrollbar" style="max-height: 332px; cursor: pointer; -webkit-user-select: none;">
+                            <div class="Scrubber-before" style="height: 27.573272781244885%;"></div>
+                            <div class="Scrubber-handle" style="cursor: move; height: 40.98360655737705%;">
+                              <div class="Scrubber-bar"></div>
+                              <div class="Scrubber-info">
+                                <strong>第<span class="Scrubber-index">2</span>楼 / 共<span class="Scrubber-count">2</span>楼</strong>
+                                <span class="Scrubber-description">十一月 2015</span>
+                              </div>
+                            </div>
+                            <div class="Scrubber-after" style="height: 31.443120661378067%;"></div>
+                            <div class="Scrubber-unread" style="top: 100%; height: 0%;">0 条未读</div>
+                          </div>
+                          <a class="Scrubber-last"><i class="icon fa fa-fw fa-angle-double-down "></i> 现在</a>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </nav>
+
+
+    		  		<div class="DiscussionPage-stream">
+    		  			<div class="PostStream">
+
+    							<!-- 快速回帖编辑器 -->
+    				  		<div class="PostStream-item" id="post_create_dl">
+    				  			<div id="composer">
+    				  			<form id="post_create_form" action="post-create-<?php echo $tid; ?>.htm" method="post">
+    				  			  <div class="Composer visible" style="height: 400px; display: block; top: 55px; bottom: 0px; left:20px; right:20px;">
+    				  			    <div class="Composer-content">
+    				  			      <div class="ComposerBody">
+    				  			        <img class="Avatar ComposerBody-avatar" src="<?php echo $user['avatar_url']; ?>">
+    				  			        <div class="ComposerBody-content">
+    				  			          <ul class="ComposerBody-header">
+    				  			            <li class="item-title"><h3><i class="icon fa fa-fw fa-reply "></i> <?=$thread['subject']?></h3></li>
+    				  			          </ul>
+    				  			          <div class="ComposerBody-editor">
+    				  			            <div class="TextEditor">
+    				  			              <textarea id="post_message" class="FormControl TextEditor-flexible" placeholder="回复内容..." name="message" style="width: 100%; height: 200px; "></textarea>
+    				  			              <ul class="TextEditor-controls">
+    				  			                <li class="item-submit"><button type="submit" class="Button Button--primary hasIcon" loading-text="正在提交..."><i class="icon fa fa-fw fa-check Button-icon"></i><span class="Button-label">回帖</span></button></li>
+    				  			              </ul>
+    				  			            </div>
+    				  			          </div>
+    				  			        </div>
+    				  			      </div>
+    				  			    </div>
+    				  			  </div>
+    				  			</form>
+    				  			</div>
+    				  		</div>
+
+    				  	</div>
+    				  </div>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    <?php include "./pc/view/footer.inc.htm"; ?>
+  </div>
+
+<link rel="stylesheet" type="text/css" href="xneditor/editor.css" />
+
+<script src="xiunoui/async.js"></script>
+<script src="xiunoui/upload.js"></script>
+<script src="xneditor/editor.js"></script>
+<script>
+
+//setInterval(function() {
+
+var editor = new $.XNEditor({textarea: 'post_message', image_upload_url:'post-upload-1.htm', image_upload_width: (<?php echo $conf['upload_image_width']; ?> - 40), file_upload_url:'post-upload-0.htm'});
+
+var jform = $('#post_create_form');
+var jinput = jform.find('input');
+var jmessage = $('#post_message');
+var jsubmit = jform.find('button').filter('[type="button"]');
+
+var tid = <?php echo $tid; ?>;
+
+jsubmit.off('click').on('click', function() {
+
+  if(!jmessage.val()) {
+    editor.jeditor.popover('请输入内容');
+    editor.focus();
+    return false;
+  }
+
+  jsubmit.button('loading');
+  var postdata = jform.serializeObj();
+  $.xpost(jform.attr('action'), postdata, function(code, message) {
+    if(code == 0) {
+      jsubmit.button('回帖成功');
+      setTimeout(function() {editor.clear(); window.location='thread-'+tid+'.htm';}, 1000);
+      return;
+    } else if(code == 2) {
+      jmessage.popover(message).focus();
+    } else {
+      $.alert(message);
+    }
+    jsubmit.button('reset');
+  });
+  return false;
+});
+//}, 1000);
+</script>
+
+  </body>
+</html>
+
+<?php
+online_save();
+cron_run();
+runtime_save();
+?>

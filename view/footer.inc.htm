@@ -1,0 +1,31 @@
+<div id="scroll_top" title="回到顶部"><i class="fa fa-fw fa-arrow-circle-up"></i></div>
+<script id="script_data">
+// 全局的数据
+var fid = <?php echo $fid; ?>;          // 当前激活的 fid
+var forumlist = <?php echo xn_json_encode(empty($forumlist_show) ? '{}' : $forumlist_show); ?>;
+// 板块数据，包含 new_tids
+var new_thread_days = <?php echo $conf['new_thread_days']; ?>;
+</script>
+
+
+<!--
+<? if($browser['name'] == 'ie' && $browser['version'] < 10) { ?>
+<script src="xiunoui/<?=(DEBUG ? 'jquery-1.11.1.js' : 'jquery-1.11.1.min.js')?>"></script>
+<? } else { ?>
+<script src="xiunoui/zepto.js"></script>
+<? } ?>
+-->
+<script src="xiunoui/<?=(DEBUG ? 'jquery-1.11.1.js' : 'jquery-1.11.1.min.js')?>"></script>
+<script src="xiunoui/xiuno.js"></script>
+<script src="xiunoui/dialog.js"></script>
+<script src="xiunoui/md5.js"></script>
+<script src="static/bbs.js"></script>
+<script src="pc/view/pc.js"></script>
+<script src="pc/view/js/baymax.js"></script>
+
+<script>
+render_header();
+render_forumlist();
+</script>
+
+<?php echo isset($setting['footer_code']) ? $setting['footer_code'] : ''; ?>

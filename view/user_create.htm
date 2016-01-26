@@ -1,0 +1,116 @@
+<? include "./pc/view/doctype.inc.htm"; ?>
+<body>
+  <div id="app" class="App App--index affix">
+    <? include "./pc/view/header_thread.inc.htm"; ?>
+    <div id="modal">
+      <div class="ModalManager modal fade in" style="display: block;">
+        <div class="Modal modal-dialog Modal--small SignUpModal">
+          <div class="Modal-content">
+            <div class="Modal-close App-backControl">
+              <!-- 返回对话框按钮 -->
+              <a class="Button Button--icon Button--link hasIcon win-back"><i class="icon fa fa-fw fa-times Button-icon"></i></a>
+            </div>
+            <form method="POST" id="create_form" action="user-create.htm" >
+              <input type="hidden" name="referer" value="<?=$referer?>" />
+              <div class="Modal-header">
+                <h3 class="App-titleControl App-titleControl--text">注册用户</h3>
+              </div>
+              <div class="Modal-body">
+                <div class="Form Form--centered">
+                  <div class="Form-group">
+                    <input class="FormControl" name="email" type="text" placeholder="邮箱">
+                  </div>
+
+                  <? if($conf['user_create_email_on']) { ?>
+                  <input type="text" placeholder="验证码" name="verifycode" style="width: 120px;">
+                  <button type="button" loading-text="正在发送..." class="Button Button--primary Button--block" id="sendactive">获取邮件验证码</button>
+                  <? } ?>
+
+                  <div class="Form-group">
+                    <button class="Button Button--primary Button--block" type="submit" loading-text="正在提交..."><span class="Button-label">下一步</span></button>
+                  </div>
+                </div>
+              </div>
+              <div class="Modal-footer">
+                <p class="SignUpModal-logIn"><a class="Button Button--block" href="user-login.htm">已有帐号？直接登录</a></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <? include "./pc/view/footer.inc.htm"; ?>
+  </div>
+
+<script>
+var jform = $('#create_form');
+var jemail = jform.find('input[name="email"]').focus();
+var jverifycode = jform.find('input[name="verifycode"]');
+var jsubmit = jform.find('button[type="submit"]');
+
+$.pdata('referer', '<?=$referer?>');
+
+jform.off('submit').on('submit', function() {
+  jsubmit.button('loading');
+  var postdata = jform.serialize();
+  $.xpost(jform.attr('action'), postdata, function(code, message) {
+    if(code == 0) {
+      window.location = 'user-setpw.htm';
+      return;
+    } else if(code == 1) {
+      jemail.popover(message).focus();
+    } else if(code == 2) {
+      jverifycode.popover(message).focus();
+    } else {
+      alert(message);
+    }
+    jsubmit.button('reset');
+  });
+  return false;
+});
+
+var jsendactive = $('#sendactive');
+jsendactive.on('click', function() {
+  if(!jemail.val()) {
+    jemail.popover('请输入 Email').focus();
+    return false;
+  }
+  jsendactive.button('loading');
+  $.xpost('user-sendactive.htm', {email: jemail.val()}, function(code, message) {
+    if(code == 0) {
+      button_count_down(jsendactive, '发送成功 ({time})', 30);
+      return;
+    } else if(code == 1) {
+      jemail.popover(message).focus();
+    } else {
+      alert(message);
+    }
+    jsendactive.button('reset');
+  });
+});
+
+// 倒计时
+function button_count_down(jbutton, text, seconds) {
+  jbutton.button('disabled');
+  if(window.button_count_down_t) clearInterval(window.button_count_down_t);
+  window.button_count_down_t = setInterval(function() {
+    if(seconds-- <= 0) {
+      clearInterval(window.button_count_down_t);
+      window.button_count_down_t = 0;
+      jbutton.button('reset');
+      return;
+    }
+    text2 = text.replace('{time}', seconds);
+    jbutton.button(text2);
+  }, 1000);
+}
+
+</script>
+</body>
+</html>
+
+<?php
+online_save();
+cron_run();
+runtime_save();
+?>

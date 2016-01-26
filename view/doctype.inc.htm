@@ -1,0 +1,41 @@
+<?php
+  !isset($header['keywords']) AND $header['keywords'] = '';
+  !isset($header['description']) AND $header['description'] = '';
+  !isset($header['title']) AND $header['title'] = '';
+  !isset($keyword) AND $keyword = '';
+?>
+<!doctype html>
+<html>
+<head>
+  <?php if(APP_PATH != './') { ?> <base href="<?php echo APP_PATH; ?>"> <?php } ?>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta content="True" name="HandheldFriendly">
+  <title><?php echo $header['title']; ?></title>
+  <meta name="keywords" content="<?php echo $header['keywords']; ?>">
+  <meta name="description" content="<?php echo $header['description']; ?>">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <!-- Add to homescreen for Chrome on Android -->
+  <link rel="icon" type="image/png" href="static/favicon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="static/app-icon72x72@2x.png">
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="小众程序"/>
+  <link rel="apple-touch-icon-precomposed" href="static/app-icon72x72@2x.png">
+
+  <link rel="stylesheet" href="pc/view/css/forum.css">
+  <link rel="stylesheet" href="pc/view/css/xiunoui.css">
+  <link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.4.0/css/font-awesome.min.css">
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.js"></script>
+  <![endif]-->
+  <script>var debug = <?php echo DEBUG; ?>;</script>
+</head>

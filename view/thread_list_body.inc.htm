@@ -1,0 +1,70 @@
+<?php if(is_array($threadlist)) { foreach($threadlist as $_thread) { ?>
+
+<li class="thread" tid="<?php echo $_thread['tid']; ?>" last_date="<?php echo $_thread['last_date']; ?>">
+  <div class="DiscussionListItem">
+    <a class="Slidable-underneath disabled"><i class="icon fa fa-fw fa-check "></i></a>
+    <div class="DiscussionListItem-content Slidable-content">
+      <a href="<?=$_thread['user_url']?>" class="DiscussionListItem-author" title=""><img class="Avatar" src="<?=$_thread['user_avatar_url']?>"></a>
+      <?php if($_thread['top'] > 0) { ?>
+      <ul class="DiscussionListItem-badges badges">
+        <li class="item-sticky">
+          <span class="Badge Badge--sticky" title="置顶"><i class="icon fa fa-fw fa-thumb-tack Badge-icon"></i></span>
+        </li>
+      </ul>
+      <?php } ?>
+      <a href="<?php echo $_thread['url']; ?>" class="DiscussionListItem-main">
+        <h3 class="DiscussionListItem-title <?php echo $_thread['thread_class']; ?> <?php echo $_thread['top_class']; ?>">
+          <? if(forum_access_mod($_thread['fid'], $gid, 'allowtop')) { ?>
+          <input type="checkbox" name="tid" value="<?=$_thread['tid']?>" />
+          <? } ?>
+          <?=$_thread['subject']?>
+        </h3>
+        <ul class="DiscussionListItem-info">
+          <? if(!$fid) { ?>
+          <li class="item-tags"><span class="TagsLabel nav-<?=$_thread['fid']?>"><span class="TagLabel colored"><span class="TagLabel-text"><?=$_thread['forumname']?></span></span></span></li>
+          <? } ?>
+          <li class="item-terminalPost">
+            <span>
+            <? if($_thread['posts'] == 0) { ?>
+              <?=$_thread['username']?> 发布于 <time pubdate="true"><?php echo $_thread['create_date_fmt']; ?></time>
+		        <? } else { ?>
+              <i class="icon fa fa-fw fa-reply "></i>
+              <span class="username"><?=$_thread['lastusername']?></span>
+		          回复于 <?php echo $_thread['last_date_fmt']; ?>
+            <? } ?>
+		        </span>
+          </li>
+<?php
+$post = post_read($_thread['firstpid']);
+$content =($post['message']);
+$message = strip_tags($content);
+$jianjie = mb_substr($message,0,80,'utf-8');
+$pattern="/<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg|\.png]))[\'|\"].*?[\/]?>/";
+preg_match_all($pattern,$content,$match);
+$imgs=array();
+for($i=0;$i<3;$i++){
+  if(!empty($match[0][$i])){
+    $imgs[$i]=$match[1][$i];
+  }
+}
+?>
+          <?php if($_thread['top'] > 0) { ?>
+          <li class="item-excerpt"><span><?php echo $jianjie ?>...</span></li>
+          <?php } ?>
+<?php if($_thread['images'] > 0) { ?>
+        <li class="item-pic rel">
+<?php if($_thread['images'] > 5) { ?>
+        <span>共 <?php echo $_thread['images'];?> 张</span>
+<?php }?>
+<?php foreach($imgs as $pic){?>
+        <img height="90" alt="<?php echo $_thread['subject']; ?>" src="<?php echo $pic ?>">
+<?php }?>
+        </li>
+        <?php } ?>
+        </ul>
+      </a>
+      <span class="DiscussionListItem-count" title="回复次数"><?=$_thread['posts']?></span>
+    </div>
+  </div>
+</li>
+<?php } } ?>

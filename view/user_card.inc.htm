@@ -1,0 +1,26 @@
+<div class="UserCard Hero UserHero">
+  <div class="darkenBackground">
+    <div class="container">
+      <div class="UserCard-profile">
+        <h2 class="UserCard-identity">
+          <div class="AvatarEditor Dropdown UserCard-avatar">
+            <img class="Avatar " src="<?php echo $_user['avatar_url']; ?>" id="avatar_img">
+          </div>
+          <span class="username"><?php echo $_user['username']; ?></span>
+        </h2>
+        <ul class="UserCard-info">
+          <li class="item-bio">
+            <div class="UserBio editable">
+              <div class="UserBio-content">
+                <p class="UserBio-placeholder">写点什么介绍下自己吧</p>
+              </div>
+            </div>
+          </li>
+          <li class="item-lastSeen">
+            <span class="UserCard-lastSeen online"><i class="icon fa fa-fw fa-circle "></i> 在线</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="UserCard Hero UserHero">
+    <div class="darkenBackground">
+    <div class="container">
+      <div class="UserCard-profile">
+        <h2 class="UserCard-identity">
+          <div class="AvatarEditor Dropdown UserCard-avatar">
+            <img class="Avatar " src="<?php echo $user['avatar_url']; ?>" id="avatar_img">
+            <a class="Dropdown-toggle" href="#"><i class="icon fa fa-fw fa-pencil "></i></a>
+            <input type="file" id="avatar_upload" accept=".jpg,.jpeg,.png,.gif,.bmp" class="avatar_upload" style="opacity:0; position:absolute; top:0;" value="更换头像"/>
+            <!--上传的进度条-->
+            <div style="width: 100%; height: 12px; border: 1px border green; margin-top: 2px;" id="avatar_progress"><div style="width: 0px;  height: 12px; background: green;"></div></div>
+          </div>
+          <span class="username"><?=$user['username']?></span>
+        </h2>
+        <ul class="UserCard-info">
+          <li class="item-bio">
+            <div class="UserBio editable">
+              <div class="UserBio-content">
+                <p class="UserBio-placeholder">写点什么介绍下自己吧</p>
+              </div>
+            </div>
+          </li>
+          <li class="item-lastSeen">
+            <span class="UserCard-lastSeen online"><i class="icon fa fa-fw fa-circle "></i> 在线</span>
+          </li>
+          <li class="item-joined">加入于 <?=$user['create_date_fmt']?></li>
+        </ul>
+      </div>
+    </div>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+<div class="sideNav UserPage-nav">
+  <ul class="affix-top">
+    <li class="item-nav">
+      <div class="ButtonGroup Dropdown dropdown App-titleControl Dropdown--select">
+        <button class="Dropdown-toggle Button" data-toggle="dropdown">
+          <span class="Button-label">我的帖子</span>
+          <i class="icon fa fa-fw fa-sort Button-caret"></i>
+        </button>
+        <ul class="Dropdown-menu dropdown-menu">
+          <li>
+            <a href="my-agree.htm" class="hasIcon">
+              <i class="icon fa fa-fw fa-heart-o Button-icon"></i>
+              <span class="Button-label">我喜欢的</span>
+            </a>
+          </li>
+          <li>
+            <a href="my-thread.htm" class="hasIcon">
+              <i class="icon fa fa-fw fa-reorder Button-icon"></i>
+              <span class="Button-label">我的帖子<span class="Button-badge"><?php echo $user['posts'] ?></span></span>
+            </a>
+          </li>
+          <li class="Dropdown-separator"></li>
+          <li>
+            <a href="my-profile.htm" class=" hasIcon">
+              <i class="icon fa fa-fw fa-cog Button-icon"></i>
+              <span class="Button-label">设置</span>
+            </a>
+          </li>
+          <li>
+            <a href="my-password.htm" class=" hasIcon">
+              <i class="icon fa fa-fw fa-key Button-icon"></i>
+              <span class="Button-label">修改密码</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,219 @@
+<? include "./pc/view/doctype.inc.htm"; ?>
+<body>
+  <div id="app" class="App App--index affix">
+
+    <? include "./pc/view/header.inc.htm"; ?>
+
+    <div class="App-content" id="threadlist_panel">
+      <div class="IndexPage">
+        <div class="Hero WelcomeHero alert">
+          <div class="container">
+            <button class="Hero-close Button Button--icon Button--link hasIcon" type="button">
+              <i class="icon fa fa-fw fa-times Button-icon close"></i>
+            </button>
+            <div class="containerNarrow">
+              <h2 class="Hero-title">网站内容合并</h2>
+              <div class="Hero-subtitle">以后统一使用 flarum.cc 域名了，原域名将放弃使用。</div>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="IndexPage-nav sideNav">
+            <ul class="fixed sidenav-fixed" id="forumlist">
+              <li class="item-newDiscussion App-primaryControl">
+              <? if(empty($gid)) { ?>
+                <a class="Button Button--primary" href="thread-create<?=(empty($fid) ? '' : "-$fid")?>.htm"><i class="icon fa fa-fw fa-edit Button-icon"></i><span class="Button-label">登录后发帖</span></a>
+              <? } else { ?>
+                <a class="Button Button--primary App-primaryControl action" href="javascript:void(0);"><i class="icon fa fa-fw fa-edit Button-icon"></i><span class="Button-label">发新帖</span></a>
+              <? } ?>
+              </li>
+              <li class="item-nav">
+                <div class="ButtonGroup Dropdown dropdown App-titleControl Dropdown--select" id="header">
+                  <!--手机模式 所有话题-->
+                  <button class="Dropdown-toggle Button"><span class="Button-label">所有话题</span> <i class="icon fa fa-fw fa-caret-down Button-caret"></i></button>
+                  <ul class="Dropdown-menu dropdown-menu menu" id="item-nav">
+                    <li fid="0"><a href="./" class="hasIcon"><i class="icon fa fa-fw fa-comments-o Button-icon"></i><span class="Button-label">所有话题</span> <i class="newthreads" fid="0">0</i></a></li>
+                    <li><a href="my-agree.htm" class="hasIcon"><i class="icon fa fa-fw fa-star Button-icon"></i><span class="Button-label">喜欢</span></a></li>
+                    <li><a href="#" active="false" class=" hasIcon"><i class="icon fa fa-fw fa-th-large Button-icon"></i><span class="Button-label">版块</span></a></li>
+                    <li class="Dropdown-separator"></li>
+                    <? foreach($forumlist_show as &$f) { ?>
+                    <li fid="<?=$f['fid']?>"><a class="TagLinkButton hasIcon nav-<?=$f['fid']?>" href="forum-<?=$f['fid']?>.htm"><span class="icon TagIcon Button-icon"></span><?=$f['name']?> <i class="newthreads" fid="<?php echo $f['fid']; ?>">0</i></a></li>
+                    <? } ?>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="IndexPage-results sideNavOffset">
+            <div class="IndexPage-toolbar">
+              <ul class="IndexPage-toolbar-view" id="threadlist_orderby">
+                <li>
+                  <div class="ButtonGroup Dropdown dropdown">
+                    <button class="Dropdown-toggle Button" data-toggle="dropdown">
+                      <span class="Button-label">
+                        <?php if($order == 'tid') { ?>最新主题<?php } ?>
+                        <?php if($order == 'lastpid') { ?>最新回复<?php } ?>
+                        <?php if($order == 'agrees') { ?>最多喜欢<?php } ?>
+                      </span>
+                      <i class="icon fa fa-fw fa-sort"></i>
+                    </button>
+                    <ul class="Dropdown-menu dropdown-menu">
+                      <li><a href="index-lastpid.htm" nofollow>最新回复</a></li>
+                      <li><a href="index-tid.htm" nofollow>最新主题</a></li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+              <? if(forum_is_mod($fid, $gid, $uid)) { ?>
+              <div class="ButtonGroup">
+                <a class="Button" id="mod_top">置顶</a>
+                <a class="Button" id="mod_move">移动</a>
+                <a class="Button" id="mod_delete">删除</a>
+                <label class="Button"><input class="hide" type="checkbox" name="checkall" id="threadlist_checkall" value="" />&nbsp;全选</label>
+              </div>
+              <? } ?>
+            </div>
+            <div class="DiscussionList">
+              <ul class="DiscussionList-discussions" id="threadlist">
+                <? include "./pc/view/thread_list_body.inc.htm"; ?>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--点击发帖后弹出的层-->
+      <form method="POST" id="thread_create_form" action="thread-create.htm">
+      <div class="App-composer">
+        <div class="container">
+          <div id="composer" class="destroy">
+            <div class="Composer sheet" style="height: 310px">
+              <ul class="Composer-controls">
+                <li class="item-close item-minimize App-backControl">
+                  <a title="关闭" class="Button Button--icon Button--link hasIcon closediv"><i class="icon fa fa-fw fa-times Button-icon"></i></a>
+                </li>
+              </ul>
+              <div class="Composer-content">
+                <div class="ComposerBody">
+                  <img class="Avatar ComposerBody-avatar" src="<?=$user['avatar_url']?>">
+                  <div class="ComposerBody-content">
+                    <ul class="ComposerBody-header">
+                      <li class="item-tags">
+                        <a class="DiscussionComposer-changeTags">
+                          <span class="TagsLabel" id="forum_select">
+                            <select name="fid">
+                              <option value="1">xiuno</option>
+                              <option value="2">柳智惠</option>
+                              <option value="3">WAVEYA</option>
+                            </select>
+                          </span>
+                        </a>
+                      </li>
+                      <li class="item-title">
+                        <h3><input type="text" name="subject" class="FormControl" placeholder="话题标题"></h3>
+                      </li>
+                    </ul>
+                    <div class="ComposerBody-editor">
+                      <div class="TextEditor">
+                        <textarea id="message" name="message" class="FormControl TextEditor-flexible" placeholder="写点什么..." style="height: 189px;"></textarea>
+                        <ul class="TextEditor-controls">
+                          <li class="item-submit">
+                            <button class="Button Button--primary hasIcon closediv" loading-text="正在提交..." type="submit">
+                              <i class="icon fa fa-fw fa-check Button-icon"></i>
+                              <span class="Button-label">发布</span>
+                            </button>
+                          </li>
+                          <li class="item-preview"><a href="thread-create.htm" class="Button Button--icon hasIcon" title="完整编辑器"><i class="icon fa fa-fw fa-pencil Button-icon"></i></a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </form>
+
+    </div>
+
+    <? include "./pc/view/footer.inc.htm"; ?>
+  </div>
+<script>
+var editor = new $.XNEditor({textarea: 'message', image_upload_url:'post-upload-1.htm', image_upload_width: <?php echo $conf['upload_image_width']; ?>, file_upload_url:'post-upload-0.htm'});
+var jform = $('#thread_create_form');
+var jinput = jform.find('input');
+var jsubject = jinput.filter('[name="subject"]').focus();
+var jmessage = $('#message');
+var jseo_url = jform.find('input[name="seo_url"]');
+var jsubmit = jform.find('button').filter('[type="submit"]');
+
+// 选择论坛
+var jforum_select = $('#forum_select');
+var forumarr = <?php echo $forumarr; ?>;
+var s = '<select name="fid">';
+for(k in forumarr) s += '<option value="'+k+'">'+forumarr[k]+'</option>';
+s += '</select>';
+var jselect = jforum_select.html(s).find('select');
+jselect.checked(fid);
+
+jform.off('submit').on('submit', function() {
+  if(!jsubject.val()) {
+    jsubject.popover('请输入标题！').focus();
+    return false;
+  }
+  if(!jmessage.val()) {
+    editor.jeditor.popover('请输入内容');
+    editor.focus();
+    return false;
+  }
+  jsubmit.button('loading');
+  var postdata = jform.serializeObj();
+  $.xpost(jform.attr('action'), postdata, function(code, message) {
+    if(code == 0) {
+      jsubmit.button('发帖成功');
+      var fid = $('select[name="fid"]').checked();
+      setTimeout(function() {editor.clear(); window.location='forum-'+fid+'.htm';}, 1000);
+      return;
+    } else if(code == 1) {
+      jsubject.popover(message).focus();
+    } else if(code == 2) {
+      jmessage.popover(message).focus();
+    } else if(code == 3) {
+      jselect.popover(message).focus();
+    } else if(code == 4) {
+      jseo_url.popover(message).focus();
+    } else {
+      $.alert(message);
+    }
+    jsubmit.button('reset');
+  });
+  return false;
+});
+
+// 快捷键回复
+jform.keyup(function(e) {
+  if((e.ctrlKey && (e.which == 13 || e.which == 10)) || (e.altKey && e.which == 83)) {
+    jsubmit.trigger('click');
+    return false;
+  }
+});
+
+</script>
+
+
+  <script>
+  render_threadlist();
+  thread_list_script();
+  forumlist_active(fid);
+  document_scroll_top();
+  </script>
+</body>
+</html>
+
+<?php
+online_save();
+cron_run();
+runtime_save();
+?>
