@@ -24,3 +24,5 @@
   3、有使用问题，请访问作者网站：http://flarum.cc/thread-3.htm
 
 </pre>
+
+模板预览：<a href="http://flarum.cc" title="模板预览地址" target="_blank">flarum.cc</a>
