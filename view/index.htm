@@ -102,9 +102,9 @@
                         <a class="DiscussionComposer-changeTags">
                           <span class="TagsLabel" id="forum_select">
                             <select name="fid">
-                              <option value="1">xiuno</option>
-                              <option value="2">柳智惠</option>
-                              <option value="3">WAVEYA</option>
+                              <?php if(is_array($forumlist_show)) { foreach($forumlist_show as &$f) { ?>
+                              <option value="<?php echo $f['fid']; ?>"><?php echo $f['name']; ?></option>
+                              <?php } } ?>
                             </select>
                           </span>
                         </a>
