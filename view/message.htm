@@ -8,12 +8,15 @@
         <div class="body">
           <h3 style="margin: 16px;">
             <span style="font-size: 24px;" class="icon <?php echo $code == 0 ? 'check-circle green' : 'minus-circle red'; ?>"></span>
-            <?php echo is_array($message) ? print_r($message, 1) : $message;?>
+            <?php echo is_array($message) ? print_r($message, 1) : $message;?>1秒后跳转回首页
           </h3>
         </div>
       </div>
     </div>
     <?php include "./pc/view/footer.inc.htm"; ?>
+    <script language=javascript>
+      setTimeout("window.location.href='./'",1000);
+    </script> 
   </body>
 </html>
 
