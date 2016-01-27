@@ -12,8 +12,8 @@
               <i class="icon fa fa-fw fa-times Button-icon close"></i>
             </button>
             <div class="containerNarrow">
-              <h2 class="Hero-title">网站内容合并</h2>
-              <div class="Hero-subtitle">以后统一使用 flarum.cc 域名了，原域名将放弃使用。</div>
+              <h2 class="Hero-title"><?php echo $header['title']; ?></h2>
+              <div class="Hero-subtitle"><?php echo $sitebrief; ?></div>
             </div>
           </div>
         </div>
@@ -36,9 +36,9 @@
                     <li><a href="my-agree.htm" class="hasIcon"><i class="icon fa fa-fw fa-star Button-icon"></i><span class="Button-label">喜欢</span></a></li>
                     <li><a href="#" active="false" class=" hasIcon"><i class="icon fa fa-fw fa-th-large Button-icon"></i><span class="Button-label">版块</span></a></li>
                     <li class="Dropdown-separator"></li>
-                    <? foreach($forumlist_show as &$f) { ?>
+                    <?php foreach($forumlist_show as &$f) { ?>
                     <li fid="<?=$f['fid']?>"><a class="TagLinkButton hasIcon nav-<?=$f['fid']?>" href="forum-<?=$f['fid']?>.htm"><span class="icon TagIcon Button-icon"></span><?=$f['name']?> <i class="newthreads" fid="<?php echo $f['fid']; ?>">0</i></a></li>
-                    <? } ?>
+                    <?php } ?>
                   </ul>
                 </div>
               </li>
@@ -64,18 +64,18 @@
                   </div>
                 </li>
               </ul>
-              <? if(forum_is_mod($fid, $gid, $uid)) { ?>
+              <?php if(forum_is_mod($fid, $gid, $uid)) { ?>
               <div class="ButtonGroup">
                 <a class="Button" id="mod_top">置顶</a>
                 <a class="Button" id="mod_move">移动</a>
                 <a class="Button" id="mod_delete">删除</a>
                 <label class="Button"><input class="hide" type="checkbox" name="checkall" id="threadlist_checkall" value="" />&nbsp;全选</label>
               </div>
-              <? } ?>
+              <?php } ?>
             </div>
             <div class="DiscussionList">
               <ul class="DiscussionList-discussions" id="threadlist">
-                <? include "./pc/view/thread_list_body.inc.htm"; ?>
+                <?php include "./pc/view/thread_list_body.inc.htm"; ?>
               </ul>
             </div>
           </div>
@@ -209,6 +209,8 @@ jform.keyup(function(e) {
   forumlist_active(fid);
   document_scroll_top();
   </script>
+
+
 </body>
 </html>
 
