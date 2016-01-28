@@ -132,7 +132,7 @@ $(function() {
 	$(".overlay").css({"height": h });
 	$(".action").click(function(){
 		$(".overlay").css({'display':'block'}).animate({'opacity':'0.8'});
-		$(".destroy").stop(true).css({'display':'block'}).animate({'margin-top':'40px','opacity':'1'},500);
+		$(".destroy").stop(true).css({'display':'block'}).animate({'margin-top':'40px','margin-bottom':'10px','opacity':'1'},500);
 	});
 	$(".closediv").click(function(){
 		$(".destroy").stop(true).css({'display':'none'}).animate({'margin-top':'-292px','opacity':'0'},500);
