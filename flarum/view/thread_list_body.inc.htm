@@ -2,7 +2,9 @@
 
 <li class="thread" tid="<?php echo $_thread['tid']; ?>" last_date="<?php echo $_thread['last_date']; ?>">
   <div class="DiscussionListItem">
-    <a class="Slidable-underneath disabled"><i class="icon fa fa-fw fa-check "></i></a>
+    <? if(forum_access_mod($_thread['fid'], $gid, 'allowtop')) { ?>
+    <div class="DiscussionListItem-controls"><input type="checkbox" name="tid" value="<?=$_thread['tid']?>" /></div>
+    <? } ?>
     <div class="DiscussionListItem-content Slidable-content">
       <a href="<?=$_thread['user_url']?>" class="DiscussionListItem-author" title=""><img class="Avatar" src="<?=$_thread['user_avatar_url']?>"></a>
       <?php if($_thread['top'] > 0) { ?>
@@ -14,9 +16,6 @@
       <?php } ?>
       <a href="<?php echo $_thread['url']; ?>" class="DiscussionListItem-main">
         <h3 class="DiscussionListItem-title <?php echo $_thread['thread_class']; ?> <?php echo $_thread['top_class']; ?>">
-          <? if(forum_access_mod($_thread['fid'], $gid, 'allowtop')) { ?>
-          <input type="checkbox" name="tid" value="<?=$_thread['tid']?>" />
-          <? } ?>
           <?=$_thread['subject']?>
         </h3>
         <ul class="DiscussionListItem-info">
