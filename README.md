@@ -19,9 +19,9 @@
 
   使用方法：
 
-  1、备份好你的源模板 xiuno/pc/view 文件夹。
-  2、解压下载后的文件，放到 xiuno/pc/ 目录下即可。
-  3、有使用问题，请访问作者网站：http://flarum.cc/thread-3.htm
+  1、将模板文件夹复制到xiuno论坛根目录。
+  2、修改根目录的index.php中include "./flarum/index.php";
+  
 
 </pre>
 

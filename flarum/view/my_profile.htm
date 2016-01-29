@@ -1,0 +1,235 @@
+<? include "./flarum/view/doctype.inc.htm"; ?>
+  <body>
+    <div id="app" class="App App--index">
+      <? include "./flarum/view/header.inc.htm"; ?>
+      <div class="App-content">
+        <div id="content">
+          <div class="UserPage">
+            <?php include "./flarum/view/my_usercard.inc.htm"; ?>
+
+            <div class="container">
+              <!--边栏开始-->
+              <div class="sideNav UserPage-nav">
+                <ul class="affix-top">
+                  <li class="item-nav">
+                    <div class="ButtonGroup Dropdown dropdown App-titleControl Dropdown--select">
+                      <button class="Dropdown-toggle Button" data-toggle="dropdown">
+                        <span class="Button-label">设置</span>
+                        <i class="icon fa fa-fw fa-sort Button-caret"></i>
+                      </button>
+                      <ul class="Dropdown-menu dropdown-menu">
+                        <li>
+                          <a href="my-agree.htm" class="hasIcon">
+                            <i class="icon fa fa-fw fa-heart-o Button-icon"></i>
+                            <span class="Button-label">我喜欢的<span class="Button-badge"><?php echo $user['myagrees'] ?></span></span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="my-thread.htm" class="hasIcon">
+                            <i class="icon fa fa-fw fa-reorder Button-icon"></i>
+                            <span class="Button-label">我的帖子<span class="Button-badge"><?php echo $user['posts'] ?></span></span>
+                          </a>
+                        </li>
+                        <li class="Dropdown-separator"></li>
+                        <li class="active">
+                          <a href="my-profile.htm" class=" hasIcon">
+                            <i class="icon fa fa-fw fa-cog Button-icon"></i>
+                            <span class="Button-label">设置</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="my-password.htm" class=" hasIcon">
+                            <i class="icon fa fa-fw fa-key Button-icon"></i>
+                            <span class="Button-label">修改密码</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+        <!--内容栏开始-->
+        <div class="sideNavOffset UserPage-content">
+        <form action="my-profile.htm" method="post" id="my_profile_form">
+          <div class="SettingsPage">
+            <ul>
+                <li class="item-notifications">
+                  <fieldset class="Settings-notifications">
+                    <legend>个人资料</legend>
+                    <ul>
+                      <li>
+                        <table class="NotificationGrid">
+                          <thead>
+                            <tr>
+                              <th>序号</th>
+                              <th>项目</th>
+                              <th>内容</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>1</td>
+                              <td>用户名</td>
+                              <td><input type="text" name="username" value="<?php echo $user['username']; ?>"></td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>邮箱</td>
+                              <td><input type="text" name="email" value="<?php echo $user['email']; ?>"></td>
+                            </tr>
+                            <tr>
+                              <td>3</td>
+                              <td>用户组</td>
+                              <td><?=$user['groupname']?></td>
+                            </tr>
+                            <tr>
+                              <td>4</td>
+                              <td>注册时间</td>
+                              <td><?=$user['create_date_fmt']?></td>
+                            </tr>
+                            <tr>
+                              <td>5</td>
+                              <td>注册IP</td>
+                              <td><?=$user['create_ip_fmt']?></td>
+                            </tr>
+                            <tr>
+                              <td>6</td>
+                              <td>最后登录</td>
+                              <td><?=$user['login_date_fmt']?></td>
+                            </tr>
+                            <tr>
+                              <td>7</td>
+                              <td>主题</td>
+                              <td><?=$user['threads']?></td>
+                            </tr>
+                            <tr>
+                              <td>8</td>
+                              <td>帖子</td>
+                              <td><?=$user['posts']?></td>
+                            </tr>
+                            <tr>
+                              <td>9</td>
+                              <td>被赞</td>
+                              <td><?=$user['agrees']?></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </li>
+                    </ul>
+                  </fieldset>
+                </li>
+                <li><button class="Button Button--primary" type="submit" loading-text="正在提交...">修改</button></li>
+              </ul>
+            </div>
+          </form>
+          </div>
+
+        <div class="sideNavOffset UserPage-content">
+          <div class="PostsUserPage">
+            <ul class="PostsUserPage-list"></ul>
+          </div>
+        </div>
+
+      </div>
+          </div>
+        </div>
+      </div>
+      <? include "./flarum/view/footer.inc.htm"; ?>
+    </div>
+
+<script src="xiunoui/async.js"></script>
+<script src="xiunoui/upload.js"></script>
+
+<script>
+$('#avatar_upload').one('click', function() {
+  var fileinput = this;
+  var jfile = $(fileinput);
+  var jimg = $('#avatar_img');
+  var url = 'pc/my-uploadavatar.htm';
+  var up = new FileUploader(fileinput, url);
+  up.filetype = 'image/png';
+  up.thumb_width = 64;
+  up.onprogress = function(file, percent) {
+    $('#avatar_progress').show().son('div').width(percent+'%');
+  }
+  up.ononce = function(file, e) {
+    var json = json_decode(e.target.response);
+    if(json && json.code == 0) {
+      $('#avatar_img').attr('src', json.message+'?'+Math.random());
+    } else {
+      var err = json && json.message ? json.message : e.target.response;
+      alert(err);
+    }
+    setTimeout(function() {$('#avatar_progress').son('div').width(0)}, 2000);
+  }
+  up.oncomplete = function(code, files) {
+    if(code == 0) {
+      //$.alert('ok');
+    } else {
+      //alert(code);
+    }
+  }
+  up.onselected = function(files) {
+    var file = files[0];
+    jimg.srcLocalFile(file);
+    if(!/^image/.test(file.type) || !/(.jpg|.jpeg|.gif|.png|.bmp)$/i.test(file.type)) {
+      jfile.popover('只允许上传jpg、jpeg、gif、png格式的图片'); return;
+    }
+    up.start();
+  }
+
+  up.onerror = function(file, e) {
+    var json = json_decode(e.target.response);
+    var err = json && json.message ? json.message : e.target.response;
+    jfile.popover(err); return;
+  }
+  up.onabort = function(file, e) {}
+  up.init();
+});
+
+
+
+var jform = $('#my_profile_form');
+var jusername = jform.find('input[name="username"]');
+var jemail = jform.find('input[name="email"]');
+var jsubmit = jform.find('button[type="submit"]');
+jform.off('submit').on('submit', function() {
+  if(!jusername.val()) {
+    jusername.popover('用户名不能为空').focus();
+    return false;
+  } else if(!jemail.val()) {
+    jemail.popover('Email 不能为空').focus();
+    return false;
+  }
+  var postdata = jform.serialize();
+  jsubmit.button('loading');
+  $.xpost(jform.attr('action'), postdata, function(code, message) {
+    if(code == 0) {
+      jsubmit.text(message);
+      setTimeout(function() {jsubmit.button('reset');}, 2000);
+      return;
+    } else if(code == 1) {
+      jusername.popover(message).focus();
+    } else if(code == 2) {
+      jemail.popover(message).focus();
+    } else {
+      $.alert(message);
+    }
+    jsubmit.button('reset');
+  });
+  return false;
+});
+
+
+$('#my_profile_menu').find('a').eq(0).class_active();
+
+</script>
+  </body>
+</html>
+
+<?php
+online_save();
+cron_run();
+runtime_save();
+?>

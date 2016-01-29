@@ -1,0 +1,64 @@
+<? include "./flarum/view/doctype.inc.htm"; ?>
+	<body>
+    <div id="app" class="App App--index affix">
+      <? include "./flarum/view/header.inc.htm"; ?>
+			<div class="ajax_body">
+				<div style="width: 300px; margin: 15px;">
+					<form method="POST" id="mod_move_form" action="mod-move-<?=$tids?>.htm" class="form">
+						<p>选中：<b><?=count($tidarr)?></b> 篇</p>
+						<p>
+							移动到：
+							<label>
+								<select name="newfid">
+									<? foreach ($forumlist as $forum) { ?>
+									<option value="<?=$forum['fid']?>"><?=$forum['name']?></option>
+									<? } ?>
+								</select>
+							</label>
+						</p>
+						<p class="center">
+							<button type="submit" loading-text="正在提交..." class="blue big">确定</button>
+						</p>
+					</form>
+				</div>
+			</div>
+			<? include "./flarum/view/footer.inc.htm"; ?>
+		</div>
+
+<script>
+
+// 防止 ajax dialog 加载时污染全局变量
+
+var jdialog = typeof arguments == 'undefined' ? null : arguments[0]; // 接受第一个参数
+var jform = $('#mod_move_form');
+var jsubmit = jform.find('button[type="submit"]');
+var newfid = jform.find('select[name="newfid"]');
+newfid.checked(<?=$thread['fid']?>);
+
+//jform.off('submit').on('submit', function() {
+jsubmit.off('click').on('click', function() {
+	var postdata = jform.serialize();
+	jsubmit.button('loading');
+	$.xpost(jform.attr('action'), postdata, function(code, message) {
+		if(code == 0) {
+			jsubmit.button(message);
+			setTimeout(function() {window.location.reload();}, 500);
+		} else if(code == 1) {
+			newfid.popover(message);
+			jsubmit.button('reset');
+		} else if(code < 0) {
+			$.alert(message);
+			jsubmit.button('reset');
+		}
+	});
+	return false;
+});
+</script>
+</body>
+</html>
+
+<?php
+online_save();
+cron_run();
+runtime_save();
+?>

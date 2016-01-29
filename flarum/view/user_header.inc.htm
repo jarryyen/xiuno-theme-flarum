@@ -1,0 +1,9 @@
+<?php include "./flarum/view/doctype.inc.htm"; ?>
+
+<div class="tab" id="user_menu">
+	<a href="user-<?=$_uid?>.htm">个人资料</a>
+	<? if($_user['uid'] != 0) { ?>
+	<a href="user-thread-<?=$_uid?>.htm">他的发帖</a>
+	<a href="user-agree-<?=$_uid?>.htm">他 赞 的</a>
+	<? } ?>
+</div>
